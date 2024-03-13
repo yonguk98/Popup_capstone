@@ -1,2 +1,7 @@
-package com.capstone.popup.member;public interface MemberRepository {
+package com.capstone.popup.member;
+
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface MemberRepository {
 }

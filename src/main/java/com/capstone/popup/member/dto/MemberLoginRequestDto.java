@@ -1,2 +1,4 @@
-package com.capstone.popup.member.dto;public class MemberLoginRequestDto {
+package com.capstone.popup.member.dto;
+
+public class MemberLoginRequestDto {
 }
