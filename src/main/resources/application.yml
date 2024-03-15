@@ -4,3 +4,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+
+jwt:
+  secret : 123123123123123123
