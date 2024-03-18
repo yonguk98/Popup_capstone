@@ -26,7 +26,7 @@ public class MemberLoginService {
     private final PasswordEncoder encoder;
 
     @Value("${jwt.secret})")
-    private static String SECRET_KEY;
+    private String SECRET_KEY;
 
     public SecurityUser getUserFromApiKey(String token) {
         Claims claims = JwtUtil.decode(token, SECRET_KEY);
@@ -63,10 +63,14 @@ public class MemberLoginService {
     }
 
     private Member getAndCheckLoginIdAndPassword(String loginId, String password) {
-        Optional<Member> memberOp = memberRepository.findByLoginIdAndLoginPassword(loginId, encoder.encode(password));
+        Optional<Member> memberOp = memberRepository.findByLoginId(loginId);
 
         if (memberOp.isEmpty()) {
             throw new RuntimeException("일치하는 회원이 없습니다.");
+        }
+
+        if(!encoder.matches(password, memberOp.get().getLoginPassword())){
+            throw new RuntimeException("password not matches");
         }
 
         return memberOp.get();

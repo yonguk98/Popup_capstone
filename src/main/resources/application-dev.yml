@@ -5,5 +5,5 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password:
-    url: jdbc:h2:tcp:localhost/~/desktop/popup/popup_dev
-#    url: jdbc:h2:~/popup_dev
+#    url: jdbc:h2:tcp:localhost/~/desktop/popup/popup_dev
+    url: jdbc:h2:~/desktop/popup/popup_dev
