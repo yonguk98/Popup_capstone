@@ -33,7 +33,7 @@ public class MemberController {
     public GlobalResponse memberLogin(@Valid @RequestBody MemberLoginRequestDto dto){
         MemberLoginResponseDto responseDto = memberLoginService.Login(dto);
         cookieUtil.addCrossDomainCookie(responseDto.getAccessToken(), responseDto.getRefreshToken());
-        return GlobalResponse.of("200","");
+        return GlobalResponse.of("200","로그인 성공");
     }
 
     @PostMapping("/logout")
