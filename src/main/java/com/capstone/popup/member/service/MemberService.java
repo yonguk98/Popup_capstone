@@ -1,5 +1,6 @@
-package com.capstone.popup.member;
+package com.capstone.popup.member.service;
 
+import com.capstone.popup.member.repository.MemberRepository;
 import com.capstone.popup.member.dto.MemberCreateRequestDto;
 import com.capstone.popup.member.entity.Member;
 import lombok.RequiredArgsConstructor;

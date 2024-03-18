@@ -1,4 +1,4 @@
-package com.capstone.popup.member;
+package com.capstone.popup.member.repository;
 
 import com.capstone.popup.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,5 +14,7 @@ public interface MemberRepository extends JpaRepository<Member,Long> {
     Optional<Member> findByLoginId(String loginId);
 
     Optional<Member> findByEmail(String email);
+
+    Optional<Member> findByLoginIdAndLoginPassword(String loginId, String password);
 
 }

@@ -6,4 +6,4 @@ spring:
       ddl-auto: create
 
 jwt:
-  secret : 123123123123123123
+  secret : fgjansrglkasjhflwiaqefhnalskdgfwaerligubasdflkgjher

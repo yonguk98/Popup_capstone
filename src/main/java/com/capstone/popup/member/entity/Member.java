@@ -11,6 +11,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @Builder(toBuilder = true)
 @AllArgsConstructor
@@ -35,4 +37,11 @@ public class Member {
     @Size(min = 2, max = 20)
     private String nickname;
 
+//    @SuppressWarnings("JpaAttributeTypeInspection")
+    public List<String> getAuthoritiesAsStrList() {
+        if(loginId.equals("admin")){
+            return List.of("ROLE_MEMBER", "ROLE_ADMIN");
+        }
+        return List.of("ROLE_MEMBER");
+    }
 }
