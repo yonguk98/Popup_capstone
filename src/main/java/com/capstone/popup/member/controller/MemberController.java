@@ -1,11 +1,9 @@
 package com.capstone.popup.member.controller;
 
 import com.capstone.popup.global.GlobalResponse;
-import com.capstone.popup.member.dto.MemberLoginResponseDto;
+import com.capstone.popup.member.dto.*;
 import com.capstone.popup.member.service.MemberLoginService;
 import com.capstone.popup.member.service.MemberService;
-import com.capstone.popup.member.dto.MemberCreateRequestDto;
-import com.capstone.popup.member.dto.MemberLoginRequestDto;
 import com.capstone.popup.member.util.CookieUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -45,9 +43,16 @@ public class MemberController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/mypage")
     public GlobalResponse getMypage(Principal principal){
-        String loginId = getName(principal);
+        MemberMypageResponseDto responseDto = memberService.getMemberMypqgeData(getName(principal));
 
-        return GlobalResponse.of("200","마이페이지 접속");
+        return GlobalResponse.of("200","마이페이지 접속", responseDto);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/mypage")
+    public GlobalResponse updateMypageData(Principal principal, @RequestBody MemberMypqgeUpdateRequestDto dto){
+        memberService.updateMypageData(getName(principal), dto);
+        return GlobalResponse.of("200", "회원 정보 변경 완료");
     }
 
     private String getName(Principal principal){

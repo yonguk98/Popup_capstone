@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class MemberMypageResponseDto {
-    private String loginId;
+public class MemberMypqgeUpdateRequestDto {
     private String nickname;
-    private String email;
+    private String loginPassword1;
+    private String loginPassword2;
 }
