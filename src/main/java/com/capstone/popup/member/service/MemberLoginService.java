@@ -35,7 +35,7 @@ public class MemberLoginService {
 
         long id = Long.parseLong((String) data.get("id"));
 
-        String username = (String) data.get("username");
+        String username = (String) data.get("loginId");
 
         List<? extends GrantedAuthority> authorities = ((List<String>) data.get("authorities"))
                 .stream()

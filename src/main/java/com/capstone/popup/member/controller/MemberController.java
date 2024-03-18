@@ -9,10 +9,10 @@ import com.capstone.popup.member.dto.MemberLoginRequestDto;
 import com.capstone.popup.member.util.CookieUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @RestController
 @RequiredArgsConstructor
@@ -40,6 +40,23 @@ public class MemberController {
     public GlobalResponse logout() {
         cookieUtil.removeCrossDomainCookie();
         return GlobalResponse.of("200", "로그아웃 성공");
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/mypage")
+    public GlobalResponse getMypage(Principal principal){
+        String loginId = getName(principal);
+
+        return GlobalResponse.of("200","마이페이지 접속");
+    }
+
+    private String getName(Principal principal){
+        try {
+            String loginId = principal.getName();
+            return loginId;
+        } catch (Exception e){
+            throw new RuntimeException("로그인 상태가 아닙니다.");
+        }
     }
 
 }
