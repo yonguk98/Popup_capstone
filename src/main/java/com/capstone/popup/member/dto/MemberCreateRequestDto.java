@@ -9,15 +9,15 @@ import lombok.Getter;
 public class MemberCreateRequestDto {
 
     @NotBlank(message = "사용할 아이디를 입력해주세요.")
-    @Size(min = 4, max = 15)
+    @Size(min = 3, max = 15)
     private String loginId;
 
     @NotBlank(message = "사용할 비밀번호를 입력해주세요")
-    @Size(min = 4, max = 15)
+    @Size(min = 3, max = 15)
     private String loginPassword1;
 
     @NotBlank(message = "사용할 비밀번호를 입력해주세요")
-    @Size(min = 4, max = 15)
+    @Size(min = 3, max = 15)
     private String loginPassword2;
 
     @NotBlank

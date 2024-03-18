@@ -23,11 +23,11 @@ public class Member {
     private Long id;
 
     @NotNull(message = "사용할 아이디를 입력해주세요.")
-    @Size(min = 4, max = 15)
+    @Size(min = 3, max = 15)
     private String loginId;
 
     @NotNull(message = "사용할 비밀번호를 입력해주세요")
-    @Size(min = 4, max = 15)
+    @Size(min = 3)
     private String loginPassword;
 
     @NotNull(message = "이메일을 입력해주세요")
