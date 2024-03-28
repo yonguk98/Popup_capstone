@@ -1,4 +1,4 @@
-package com.capstone.popup.image;
+package com.capstone.popup.ocr;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -14,13 +14,18 @@ import static java.lang.Thread.sleep;
 
 public class Crawling {
 
-    public void run() throws InterruptedException {
+    public List<String> run() throws InterruptedException {
 
         // 크롬 드라이버 로드
-        System.setProperty("webdriver.chrome.driver", "/Users/yonguk/Desktop/capstone/chromedriver");
+        String driverPath = "/Users/yonguk/Desktop/capstone/chromedriver";
+        String chromePath = "/Users/yonguk/Desktop/capstone/ChromeTesting.app";
+
+        System.setProperty("webdriver.chrome.driver", driverPath);
+
         ChromeOptions options = new ChromeOptions();
-//        options.setBinary("/Users/yonguk/Desktop/capstone/ChromeTesting.app");
+//        options.setBinary(chromePath);
         options.addArguments("--remote-allow-origins=*");
+
         WebDriver driver = new ChromeDriver(options);
 
         // 인스타그램 첫화면으로 이동
@@ -57,19 +62,27 @@ public class Crawling {
         String searchHashtag = "성수팝업";
         driver.get("https://www.instagram.com/explore/tags/" + searchWord);
         sleep(10000);
+        System.out.println("접속 페이지 명: " + driver.getTitle());
 
-        // 검색 결과 페이지의 모든 링크 저장
+        // 검색 결과 페이지의 게시글 링크 저장
         List<String> links = findAllArticleLink(driver);
-        // 찾은 링크로 이동
+        List<String> imgLinks = new ArrayList<>();
+
+        // 게시글로 이동
         for (int i = 0; i < 6; i++) {
             System.out.println(i);
             driver.get(links.get(i));
             sleep(4000);
 
-            saveSrcLink(driver);
+            // 게시글의 이미지 주소 저장
+            imgLinks = saveSrcLink(driver);
         }
+
+        return imgLinks;
     }
 
+    // 검색 결과 페이지에서 a 태그의 href값을 추출하는 함수
+    // 게시글의 주소값만 추출
     private static List<String> findAllArticleLink(WebDriver driver) {
         List<WebElement> findLinks = driver.findElements(By.tagName("a"));
         List<String> list = new ArrayList<>();
@@ -82,11 +95,16 @@ public class Crawling {
         return list;
     }
 
-    private static void saveSrcLink(WebDriver driver) {
+    // 특정 게시글의 img태그에서 src값을 추출하는 함수
+    // TODO: 사용자 계정 이미지 같은 불필요한 값 필터링 필요
+    private List<String> saveSrcLink(WebDriver driver) {
         List<WebElement> posts = driver.findElements(By.tagName("img"));
+        List<String> imgLinks = new ArrayList<>();
         for (WebElement post : posts) {
-            System.out.println(post.getAttribute("src"));
-            //TODO: 이미지 링크 저장?
+            String imgLink = post.getAttribute("src");
+            System.out.println(imgLink + "\n");
+            imgLinks.add(imgLink);
         }
+        return imgLinks;
     }
 }
