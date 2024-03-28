@@ -44,6 +44,9 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3', 'io.jsonwebtoken:jjwt-jackson:0.12.3'
 
+	//CRAWLING
+	implementation 'org.seleniumhq.selenium:selenium-java:4.18.1'
+
 }
 
 tasks.named('test') {
