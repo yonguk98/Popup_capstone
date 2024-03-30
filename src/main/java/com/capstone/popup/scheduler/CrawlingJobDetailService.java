@@ -14,9 +14,11 @@ import static org.quartz.JobBuilder.newJob;
 @Component
 public class CrawlingJobDetailService {
 
-    public JobDetail build(JobKey jobKey){
+    public JobDetail build(JobKey jobKey, String accountName, Integer weekDay){
 
         JobDataMap jobDataMap = new JobDataMap();
+        jobDataMap.put("accountName", accountName);
+        jobDataMap.put("weekDay", weekDay);
 
         return newJob(CrawlingJob.class)
                 .withIdentity(jobKey.getName(), jobKey.getGroup())

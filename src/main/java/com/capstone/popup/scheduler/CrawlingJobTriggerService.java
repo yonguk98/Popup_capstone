@@ -13,11 +13,12 @@ import static org.quartz.TriggerBuilder.newTrigger;
 @Component
 public class CrawlingJobTriggerService {
 
-    public Trigger build(JobKey jobKey){
+    public Trigger build(JobKey jobKey, Integer weekDay){
 
-        CronExpression cronExpression = makeCronExpression(1);
+        CronExpression cronExpression = makeCronExpression(weekDay);
         if (cronExpression == null) {
-            // null 처리
+            // null 처리, 커스텀 예외 필요
+            throw new NullPointerException("크론표현식이 존재하지 않습니다.");
         }
         return newTrigger()
                 .forJob(jobKey)
@@ -27,19 +28,17 @@ public class CrawlingJobTriggerService {
                 .build();
     }
 
-    private CronExpression makeCronExpression(int day) {
-        CronExpression cronExpression = null;
+    private CronExpression makeCronExpression(Integer weekDay) {
         try {
-            cronExpression = new CronExpression(String.format("0 0 10 %s * ?", day));
+            CronExpression cronExpression = new CronExpression(String.format("0 15 11 ? * %s *", weekDay));
+            return cronExpression;
         } catch (ParseException e) {
             // exception 처리 추가 필요
             throw new RuntimeException(e);
         }
-
-        return cronExpression;
     }
 
-    public Trigger update(Scheduler scheduler, JobKey jobKey, Integer day){
+    public Trigger update(Scheduler scheduler, JobKey jobKey, Integer weekDay){
         // 트리거 키 생성
         TriggerKey triggerKey = new TriggerKey(jobKey.getName(), jobKey.getGroup());
 
@@ -53,7 +52,7 @@ public class CrawlingJobTriggerService {
         }
 
         //크론 표현식 정의
-        CronExpression cronExpression = makeCronExpression(day);
+        CronExpression cronExpression = makeCronExpression(weekDay);
 
         // 새로운 날짜로 트리거 업데이트
         trigger.setCronExpression(cronExpression);
