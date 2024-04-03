@@ -14,7 +14,7 @@ import static java.lang.Thread.sleep;
 
 public class Crawling {
 
-    public List<String> run() throws InterruptedException {
+    public List<String> run(String accountName) throws InterruptedException {
 
         // 크롬 드라이버 로드
         String driverPath = "/Users/yonguk/Desktop/capstone/chromedriver";
@@ -58,7 +58,7 @@ public class Crawling {
         sleep(5000); // 혹시 다른 프로세스들도 멈추는 건지 확인 필요
 
         // 검색 후 이동
-        String searchWord = "https://www.instagram.com/zele._.park/";
+        String searchWord = "https://www.instagram.com/" + accountName;
         String searchHashtag = "성수팝업";
         driver.get("https://www.instagram.com/explore/tags/" + searchWord);
         sleep(10000);
