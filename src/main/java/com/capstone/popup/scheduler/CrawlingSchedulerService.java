@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 @Service
-public class CrawlingService {
+public class CrawlingSchedulerService {
 
     private final Scheduler scheduler;
     private final CrawlingJobTriggerService triggerService;

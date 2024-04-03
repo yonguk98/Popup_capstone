@@ -14,7 +14,7 @@ import static java.lang.Thread.sleep;
 
 public class Crawling {
 
-    public List<String> run(String accountName) throws InterruptedException {
+    public List<String> run(String accountName) {
 
         // 크롬 드라이버 로드
         String driverPath = "/Users/yonguk/Desktop/capstone/chromedriver";
@@ -55,13 +55,21 @@ public class Crawling {
         loginButton.get(1).click();
         System.out.println(loginButton.get(1).getAccessibleName() + "클릭 완료");
 
-        sleep(5000); // 혹시 다른 프로세스들도 멈추는 건지 확인 필요
+        try {
+            sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         // 검색 후 이동
         String searchWord = "https://www.instagram.com/" + accountName;
         String searchHashtag = "성수팝업";
         driver.get("https://www.instagram.com/explore/tags/" + searchWord);
-        sleep(10000);
+        try {
+            sleep(10000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         System.out.println("접속 페이지 명: " + driver.getTitle());
 
         // 검색 결과 페이지의 게시글 링크 저장
@@ -72,7 +80,11 @@ public class Crawling {
         for (int i = 0; i < 6; i++) {
             System.out.println(i);
             driver.get(links.get(i));
-            sleep(4000);
+            try {
+                sleep(4000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
             // 게시글의 이미지 주소 저장
             imgLinks = saveSrcLink(driver);
