@@ -1,6 +1,7 @@
 spring:
   profiles:
     active: dev
+    include: secret
   jpa:
     hibernate:
       ddl-auto: create
