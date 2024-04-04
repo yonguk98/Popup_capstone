@@ -9,14 +9,19 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Builder(toBuilder = true)
+import java.time.LocalDateTime;
+
+@Entity
 @Getter
+@Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 public class AdminArticle {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String content;
 
+    @Builder.Default
+    private LocalDateTime date = LocalDateTime.now();
 }
