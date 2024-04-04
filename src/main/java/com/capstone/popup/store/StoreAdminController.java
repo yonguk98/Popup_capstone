@@ -17,7 +17,6 @@ public class StoreAdminController {
 
 
     }
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     @GetMapping
     public GlobalResponse test(){
         return GlobalResponse.of("200","test");
