@@ -1,4 +1,4 @@
-package com.capstone.popup.global;
+package com.capstone.popup.global.config;
 
 import com.capstone.popup.global.jwt.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;

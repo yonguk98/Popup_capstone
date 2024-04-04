@@ -1,5 +1,6 @@
-package com.capstone.popup.global;
+package com.capstone.popup.global.config;
 
+import com.capstone.popup.global.QuartzAutowiringSpringBeanJobFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
