@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin")
+@RequestMapping("/admin/article")
 public class AdminArticleController {
 
     private final AdminArticleService adminArticleService;
