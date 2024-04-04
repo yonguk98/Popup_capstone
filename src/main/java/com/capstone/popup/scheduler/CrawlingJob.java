@@ -26,7 +26,7 @@ public class CrawlingJob implements Job {
 
         List<String> urlList = crawling.run(accountName);
         String jsonBody = ocrRequest.makeRequestBodyJson(urlList.get(1));
-        Mono<String> ocrResponse = ocrRequest.sendRequestToClova(jsonBody);
+        List<String> ocrResponse = ocrRequest.sendRequestToClova(jsonBody);
 
     }
 }

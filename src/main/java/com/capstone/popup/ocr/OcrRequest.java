@@ -17,10 +17,7 @@ import reactor.netty.http.client.HttpClient;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class OcrRequest {
@@ -31,7 +28,9 @@ public class OcrRequest {
     @Value("${secret.ncp.clova.secret")
     String secretKey;
 
-    public Mono<String> sendRequestToClova(Object jsonBody) {
+    private static String resultString;
+
+    public List<String> sendRequestToClova(Object jsonBody) {
         HttpClient httpClient = HttpClient.create()
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000) //timeout 시간 조절
                 .responseTimeout(Duration.ofMillis(7000))
@@ -52,10 +51,10 @@ public class OcrRequest {
                 .bodyToMono(String.class);
 
         response.subscribe(result -> {
-            filtering(result);
+            resultString = result;
         });
 
-        return response;
+        return filtering(resultString);
 
     }
 
