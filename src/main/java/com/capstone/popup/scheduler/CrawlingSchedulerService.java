@@ -14,7 +14,7 @@ public class CrawlingSchedulerService {
     private final CrawlingJobTriggerService triggerService;
     private final CrawlingJobDetailService detailService;
 
-    public void registerCrawlingJob(String accountName, Integer weekDay){
+    public void registerCrawlingJob(String accountName, Integer weekDay) {
         JobKey jobKey = makeJobKey(accountName);
 
         // check job key duplication
@@ -26,15 +26,30 @@ public class CrawlingSchedulerService {
         enrollJobToScheduler(jobDetail, trigger);
     }
 
-    public void updateCrawlingJob(){
+
+    public void deleteCrawlingJob(String accountName) {
+
+        JobKey jobKey = makeJobKey(accountName);
+
+        try {
+            scheduler.deleteJob(jobKey);
+        } catch (SchedulerException e) {
+            // TODO: 작업 삭제 실패시 다시시도? or 실패 알림
+            throw new RuntimeException("작업을 삭제하는데 실패했습니다.");
+        }
 
     }
 
-    public void deleteCrawlingJob(){
+    public void updateCrawlingJob(String accountName, Integer weekDay) {
+        JobKey jobKey = makeJobKey(accountName);
+
+        // TODO: 기존 작업 삭제하고 다시 등록하기? 아니면 있는 작업 찾아서 업데이트하기?
+        deleteCrawlingJob(accountName);
+        registerCrawlingJob(accountName, weekDay);
 
     }
 
-    private JobKey makeJobKey(String accountName){
+    private JobKey makeJobKey(String accountName) {
         JobKey key = JobKey.jobKey(accountName);
 
         log.info("Created jobkey: ", key.getName());
