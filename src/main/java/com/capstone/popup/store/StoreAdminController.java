@@ -13,9 +13,10 @@ public class StoreAdminController {
     private final StoreService storeService;
 
     @PostMapping("/create")
-    public void createStore(@RequestBody StoreCreateRequestDto dto){
+    public GlobalResponse createStore(@RequestBody StoreCreateRequestDto dto){
+        storeService.registerStore(dto);
 
-
+        return GlobalResponse.of("200","스토어 등록 성공");
     }
     @GetMapping
     public GlobalResponse test(){
