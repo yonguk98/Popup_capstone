@@ -5,6 +5,7 @@ import com.capstone.popup.member.dto.MemberMypqgeUpdateRequestDto;
 import com.capstone.popup.member.repository.MemberRepository;
 import com.capstone.popup.member.dto.MemberCreateRequestDto;
 import com.capstone.popup.member.entity.Member;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,10 @@ public class MemberService {
         memberRepository.save(newMember);
     }
 
+    public Member getMemberById(Long id) {
+        return memberRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("멤버를 찾을 수 없습니다."));
+    }
+
     public MemberMypageResponseDto getMemberMypqgeData(String loginId) {
         Member loginMember = getMemberByLoginId(loginId);
 
@@ -57,8 +62,7 @@ public class MemberService {
             loginMember = loginMember.toBuilder().nickname(dto.getNickname()).build();
         }
         // 비밀번호 널 체크
-        if(!dto.getLoginPassword1().isEmpty() && !dto.getLoginPassword2().isEmpty())
-        {
+        if (!dto.getLoginPassword1().isEmpty() && !dto.getLoginPassword2().isEmpty()) {
             passwordEqualCheck(dto.getLoginPassword1(), dto.getLoginPassword2());
             loginMember = loginMember.toBuilder().loginPassword(passwordEncoder.encode(dto.getLoginPassword2())).build();
         }
