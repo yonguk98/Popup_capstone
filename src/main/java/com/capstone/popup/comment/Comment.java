@@ -1,4 +1,4 @@
-package com.capstone.comment;
+package com.capstone.popup.comment;
 
 import com.capstone.popup.member.entity.Member;
 import com.capstone.popup.store.Store;

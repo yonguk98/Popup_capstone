@@ -1,8 +1,6 @@
-package com.capstone.comment;
+package com.capstone.popup.comment;
 
-import com.capstone.popup.member.entity.Member;
 import com.capstone.popup.member.service.MemberService;
-import com.capstone.popup.store.Store;
 import com.capstone.popup.store.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
