@@ -4,6 +4,7 @@ import com.capstone.popup.global.GlobalResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -29,11 +30,16 @@ public class CommentController {
     }
 
     @GetMapping("/{articleId}")
-    public GlobalResponse getAllComment(@PathVariable Long articleId) {
+    public GlobalResponse getAllComment(@PathVariable Long articleId, Principal principal) {
 
-        List<Comment> commentList = commentService.getAllCommentsByStoreId(articleId);
-        // 엔티티 그대로 반환하지 않고 dto로 변환 필요.
+        List<CommentReadResponseDto> commentList = commentService.getAllCommentsByStoreId(articleId, principal);
 
         return GlobalResponse.of("200", "스토어 모든 후기 조회", commentList);
+    }
+
+    @PostMapping("/like")
+    public GlobalResponse registerLike(@PathVariable Long commentId){
+
+        return GlobalResponse.of("200","좋아요 추가 성공");
     }
 }

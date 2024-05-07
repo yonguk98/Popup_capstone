@@ -41,7 +41,17 @@ public class MemberService {
     }
 
     public Member getMemberById(Long id) {
-        return memberRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("멤버를 찾을 수 없습니다."));
+        return memberRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("해당 고유번호와 일치하는 멤버를 찾을 수 없습니다."));
+    }
+
+    public Member getMemberByLoginId(String loginId) {
+        Optional<Member> memberOp = memberRepository.findByLoginId(loginId);
+
+        if (memberOp.isEmpty()) {
+            throw new RuntimeException("해당 아이디와 일치하는 회원을 찾을 수 없습니다.");
+        }
+
+        return memberOp.get();
     }
 
     public MemberMypageResponseDto getMemberMypqgeData(String loginId) {
@@ -68,16 +78,6 @@ public class MemberService {
         }
 
         memberRepository.save(loginMember);
-    }
-
-    private Member getMemberByLoginId(String loginId) {
-        Optional<Member> memberOp = memberRepository.findByLoginId(loginId);
-
-        if (memberOp.isEmpty()) {
-            throw new RuntimeException("해당 아이디와 일치하는 회원을 찾을 수 없습니다.");
-        }
-
-        return memberOp.get();
     }
 
     private void validDuplicateLoginId(String loginId) {
