@@ -19,7 +19,7 @@ public class CommentService {
     private final MemberService memberService;
     private final StoreService storeService;
 
-    public void registerComment(CommentCreateRequestDto dto){
+    public void registerComment(CommentCreateRequestDto dto) {
 
         // null check and get entity
         Store store = storeService.getStoreById(dto.getStoreId());
@@ -36,15 +36,15 @@ public class CommentService {
         commentRepository.save(comment);
     }
 
-    public void deleteCommentById(Long commentId){
+    public void deleteCommentById(Long commentId) {
         commentRepository.delete(getCommentById(commentId));
     }
 
-    public List<Comment> getAllCommentsByStoreId(Long storeId){
+    public List<Comment> getAllCommentsByStoreId(Long storeId) {
         return commentRepository.findAllByStore(storeService.getStoreById(storeId));
     }
 
-    public Comment getCommentById(Long commnetId){
+    public Comment getCommentById(Long commnetId) {
         return commentRepository.findById(commnetId)
                 .orElseThrow(() -> new EntityNotFoundException("후기를 찾을 수 없습니다."));
     }
