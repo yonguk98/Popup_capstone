@@ -13,13 +13,13 @@ public class StoreController {
     private final StoreService storeService;
 
     @GetMapping
-    public void getAllStore() {
-
+    public GlobalResponse getAllStore() {
+        return GlobalResponse.of("200", "모든 스토어 조회", storeService.getAllStore());
     }
 
     @GetMapping("/{id}")
-    public void getOneStore(@PathVariable Long id) {
-
+    public GlobalResponse getOneStore(@PathVariable Long id) {
+        return GlobalResponse.of("200", id + "번 스토어 조회", storeService.getStoreById(id));
     }
 
     @PreAuthorize("isAuthenticated()")

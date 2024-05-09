@@ -30,10 +30,10 @@ public class CommentController {
         return GlobalResponse.of("200", "후기 삭제 성공");
     }
 
-    @GetMapping("/{articleId}")
-    public GlobalResponse getAllComment(@PathVariable Long articleId, Principal principal) {
+    @GetMapping("/{storeId}")
+    public GlobalResponse getAllComment(@PathVariable Long storeId, Principal principal) {
 
-        List<CommentReadResponseDto> commentList = commentService.getAllCommentsByStoreId(articleId, principal);
+        List<CommentReadResponseDto> commentList = commentService.getAllCommentsByStoreId(storeId, principal);
 
         return GlobalResponse.of("200", "스토어 모든 후기 조회", commentList);
     }
