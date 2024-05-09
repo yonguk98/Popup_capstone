@@ -103,6 +103,6 @@ jobs:
           script:
             whoami;
             docker rm -f deploy_1;
-            docker rmi ghcr.io/yonguk/popup_capstone;
-            docker pull ghcr.io/yonguk/popup_capstone;
+            docker rmi ghcr.io/yonguk98/popup_capstone;
+            docker pull ghcr.io/yonguk98/popup_capstone:latest;
             docker run --name deploy_1  -d -p 8080:8090 -e TZ=Asia/Seoul ghcr.io/yonguk/popup_capstone;
