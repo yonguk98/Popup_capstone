@@ -112,6 +112,11 @@ public class CommentService {
 
         if (isLikeable(comment, member)) {
             commentLikeService.registerCommentLike(member, comment);
+
+            comment.toBuilder()
+                    .likeCount(comment.getLikeCount()+1)
+                    .build();
+            commentRepository.save(comment);
         }
     }
 
@@ -121,6 +126,13 @@ public class CommentService {
 
         if (!isLikeable(comment, member)) {
             commentLikeService.deleteCommentLike(member, comment);
+
+            if(comment.getLikeCount()>=1) {
+                comment.toBuilder()
+                        .likeCount(comment.getLikeCount() - 1)
+                        .build();
+                commentRepository.save(comment);
+            }
         }
     }
 
