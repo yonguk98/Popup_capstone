@@ -1,5 +1,6 @@
 package com.capstone.popup.comment;
 
+import com.capstone.popup.comment.like.CommentLikeCreateRequestDto;
 import com.capstone.popup.global.GlobalResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -38,8 +39,18 @@ public class CommentController {
     }
 
     @PostMapping("/like")
-    public GlobalResponse registerLike(@PathVariable Long commentId){
+    public GlobalResponse registerLike(@RequestBody CommentLikeCreateRequestDto dto){
 
-        return GlobalResponse.of("200","좋아요 추가 성공");
+        commentService.commentLike(dto);
+
+        return GlobalResponse.of("200","좋아요 실행 성공");
+    }
+
+    @DeleteMapping("/like")
+    public GlobalResponse deleteLike(@RequestBody CommentLikeCreateRequestDto dto){
+
+        commentService.cancelCommentLike(dto);
+
+        return GlobalResponse.of("200","좋아요 취소 실행 성공");
     }
 }

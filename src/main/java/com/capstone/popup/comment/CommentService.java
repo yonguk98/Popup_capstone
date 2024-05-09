@@ -1,6 +1,7 @@
 package com.capstone.popup.comment;
 
 import com.capstone.popup.comment.like.CommentLike;
+import com.capstone.popup.comment.like.CommentLikeCreateRequestDto;
 import com.capstone.popup.comment.like.CommentLikeRepository;
 import com.capstone.popup.comment.like.CommentLikeService;
 import com.capstone.popup.member.entity.Member;
@@ -24,7 +25,6 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final MemberService memberService;
     private final StoreService storeService;
-    private final CommentLikeRepository commentLikeRepository;
     private final CommentLikeService commentLikeService;
 
     public void registerComment(CommentCreateRequestDto dto) {
@@ -97,14 +97,23 @@ public class CommentService {
                 .orElseThrow(() -> new EntityNotFoundException("후기를 찾을 수 없습니다."));
     }
 
-    public void addLikeCountById(Long commentId){
-        Comment comment = getCommentById(commentId);
+    public void commentLike(CommentLikeCreateRequestDto dto){
 
-        commentRepository.save(comment.toBuilder().likeCount(comment.getLikeCount()+1).build());
+        Comment comment = getCommentById(dto.getCommentId());
+        Member member = memberService.getMemberById(dto.getMemberId());
+
+        if(isLikeable(comment, member)){
+            commentLikeService.registerCommentLike(member, comment);
+        }
     }
 
-    public void subLikeCountById(Long commentId){
+    public void cancelCommentLike(CommentLikeCreateRequestDto dto){
+        Comment comment = getCommentById(dto.getCommentId());
+        Member member = memberService.getMemberById(dto.getMemberId());
 
+        if(!isLikeable(comment, member)){
+            commentLikeService.deleteCommentLike(member, comment);
+        }
     }
 
 
