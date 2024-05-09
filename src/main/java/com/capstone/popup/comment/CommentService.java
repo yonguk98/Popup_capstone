@@ -48,12 +48,12 @@ public class CommentService {
         commentRepository.delete(getCommentById(commentId));
     }
 
-    public void deleteCommentByStore(Store store) {
-        commentRepository.deleteAllByStore(store);
+    public void deleteCommentByStoreId(Long storeId) {
+        commentRepository.deleteAllByStore(storeService.getStoreById(storeId));
     }
 
-    public void deleteCommentByMember(Member member) {
-        commentRepository.deleteAllByMember(member);
+    public void deleteCommentByMemberId(Long memberId) {
+        commentRepository.deleteAllByMember(memberService.getMemberById(memberId));
     }
 
     // paging 추가 필요
