@@ -7,9 +7,9 @@ spring:
       max-file-size: 5MB
       max-request-size: 5MB
   datasource:
-    url: ${secret.mysql-url}
-    username: ${secret.dev-mysql-username}
-    password: ${secret.dev-mysql-password}
+    url: jdbc:mysql://localhost:3306/popup_db?serverTimezone=UTC&characterEncoding=UTF-8&autoReconnect=true
+    username: root
+    password: yonguk1234
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
