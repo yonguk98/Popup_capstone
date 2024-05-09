@@ -69,7 +69,7 @@ public class MemberLoginService {
             throw new RuntimeException("일치하는 회원이 없습니다.");
         }
 
-        if(!encoder.matches(password, memberOp.get().getLoginPassword())){
+        if (!encoder.matches(password, memberOp.get().getLoginPassword())) {
             throw new RuntimeException("password not matches");
         }
 

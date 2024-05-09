@@ -39,18 +39,18 @@ public class CommentController {
     }
 
     @PostMapping("/like")
-    public GlobalResponse registerLike(@RequestBody CommentLikeCreateRequestDto dto){
+    public GlobalResponse registerLike(@RequestBody CommentLikeCreateRequestDto dto) {
 
         commentService.commentLike(dto);
 
-        return GlobalResponse.of("200","좋아요 실행 성공");
+        return GlobalResponse.of("200", "좋아요 실행 성공");
     }
 
     @DeleteMapping("/like")
-    public GlobalResponse deleteLike(@RequestBody CommentLikeCreateRequestDto dto){
+    public GlobalResponse deleteLike(@RequestBody CommentLikeCreateRequestDto dto) {
 
         commentService.cancelCommentLike(dto);
 
-        return GlobalResponse.of("200","좋아요 취소 실행 성공");
+        return GlobalResponse.of("200", "좋아요 취소 실행 성공");
     }
 }

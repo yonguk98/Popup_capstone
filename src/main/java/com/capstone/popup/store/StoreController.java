@@ -13,18 +13,18 @@ public class StoreController {
     private final StoreService storeService;
 
     @GetMapping
-    public void getAllStore(){
+    public void getAllStore() {
 
     }
 
     @GetMapping("/{id}")
-    public void getOneStore(@PathVariable Long id){
+    public void getOneStore(@PathVariable Long id) {
 
     }
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/test")
-    public GlobalResponse test(){
-        return GlobalResponse.of("200","test");
+    public GlobalResponse test() {
+        return GlobalResponse.of("200", "test");
     }
 }

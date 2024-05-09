@@ -48,11 +48,11 @@ public class CommentService {
         commentRepository.delete(getCommentById(commentId));
     }
 
-    public void deleteCommentByStore(Store store){
+    public void deleteCommentByStore(Store store) {
         commentRepository.deleteAllByStore(store);
     }
 
-    public void deleteCommentByMember(Member member){
+    public void deleteCommentByMember(Member member) {
         commentRepository.deleteAllByMember(member);
     }
 
@@ -62,7 +62,7 @@ public class CommentService {
         Member member = getLoginedMember(principal);
 
         List<CommentReadResponseDto> dtoList = new ArrayList<>();
-        for(Comment comment : commentList){
+        for (Comment comment : commentList) {
 
             // 좋아요 가능한지 아닌지 검증
             boolean isLiked = false;
@@ -85,7 +85,7 @@ public class CommentService {
 
     private boolean isLikeable(Comment comment, Member member) {
         Set<Long> likeIdSet = commentLikeService.getAllCommentLikeMemberIdByCommentId(comment);
-        if(likeIdSet.contains(member.getId())){
+        if (likeIdSet.contains(member.getId())) {
             return true;
         }
         return false;
@@ -95,7 +95,7 @@ public class CommentService {
         try {
             String loginId = principal.getName();
             return memberService.getMemberByLoginId(loginId);
-        } catch (Exception e){
+        } catch (Exception e) {
             return null;
         }
     }
@@ -105,21 +105,21 @@ public class CommentService {
                 .orElseThrow(() -> new EntityNotFoundException("후기를 찾을 수 없습니다."));
     }
 
-    public void commentLike(CommentLikeCreateRequestDto dto){
+    public void commentLike(CommentLikeCreateRequestDto dto) {
 
         Comment comment = getCommentById(dto.getCommentId());
         Member member = memberService.getMemberById(dto.getMemberId());
 
-        if(isLikeable(comment, member)){
+        if (isLikeable(comment, member)) {
             commentLikeService.registerCommentLike(member, comment);
         }
     }
 
-    public void cancelCommentLike(CommentLikeCreateRequestDto dto){
+    public void cancelCommentLike(CommentLikeCreateRequestDto dto) {
         Comment comment = getCommentById(dto.getCommentId());
         Member member = memberService.getMemberById(dto.getMemberId());
 
-        if(!isLikeable(comment, member)){
+        if (!isLikeable(comment, member)) {
             commentLikeService.deleteCommentLike(member, comment);
         }
     }

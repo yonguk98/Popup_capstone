@@ -19,7 +19,8 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 public class Member {
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotNull(message = "사용할 아이디를 입력해주세요.")
@@ -37,9 +38,9 @@ public class Member {
     @Size(min = 2, max = 20)
     private String nickname;
 
-//    @SuppressWarnings("JpaAttributeTypeInspection")
+    //    @SuppressWarnings("JpaAttributeTypeInspection")
     public List<String> getAuthoritiesAsStrList() {
-        if(loginId.equals("admin")){
+        if (loginId.equals("admin")) {
             return List.of("ROLE_MEMBER", "ROLE_ADMIN");
         }
         return List.of("ROLE_MEMBER");

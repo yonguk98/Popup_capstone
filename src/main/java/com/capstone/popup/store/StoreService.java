@@ -37,7 +37,7 @@ public class StoreService {
         return storeRepository.findAll();
     }
 
-    public void updateStoreById(Long id, StoreCreateRequestDto dto){
+    public void updateStoreById(Long id, StoreCreateRequestDto dto) {
         Store store = getStoreById(id);
 
         store.toBuilder()
@@ -49,7 +49,7 @@ public class StoreService {
         storeRepository.save(store);
     }
 
-    public void deleteStoreById(Long id){
+    public void deleteStoreById(Long id) {
         storeRepository.deleteById(id);
     }
 
