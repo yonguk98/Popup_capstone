@@ -48,6 +48,14 @@ public class CommentService {
         commentRepository.delete(getCommentById(commentId));
     }
 
+    public void deleteCommentByStore(Store store){
+        commentRepository.deleteAllByStore(store);
+    }
+
+    public void deleteCommentByMember(Member member){
+        commentRepository.deleteAllByMember(member);
+    }
+
     // paging 추가 필요
     public List<CommentReadResponseDto> getAllCommentsByStoreId(Long storeId, Principal principal) {
         List<Comment> commentList = commentRepository.findAllByStore(storeService.getStoreById(storeId));
