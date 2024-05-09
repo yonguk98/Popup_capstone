@@ -21,5 +21,5 @@ public class CommentReadResponseDto {
     private LocalDateTime regDate;
 
     @Builder.Default
-    private boolean isLiked = true;
+    private boolean likable = true;
 }

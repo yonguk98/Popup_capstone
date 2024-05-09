@@ -65,9 +65,9 @@ public class CommentService {
         for (Comment comment : commentList) {
 
             // 좋아요 가능한지 아닌지 검증
-            boolean isLiked = false;
+            boolean likeable = true;
             if (member != null) {
-                isLiked = isLikeable(comment, member);
+                likeable = isLikeable(comment, member);
             }
 
             CommentReadResponseDto dto = CommentReadResponseDto.builder()
@@ -75,7 +75,7 @@ public class CommentService {
                     .content(comment.getContent())
                     .likeCount(comment.getLikeCount())
                     .regDate(comment.getRegDate())
-                    .isLiked(isLiked)
+                    .likable(likeable)
                     .build();
 
             dtoList.add(dto);
@@ -86,9 +86,9 @@ public class CommentService {
     private boolean isLikeable(Comment comment, Member member) {
         Set<Long> likeIdSet = commentLikeService.getAllCommentLikeMemberIdByCommentId(comment);
         if (likeIdSet.contains(member.getId())) {
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 
     private Member getLoginedMember(Principal principal) {
@@ -109,6 +109,8 @@ public class CommentService {
 
         Comment comment = getCommentById(dto.getCommentId());
         Member member = memberService.getMemberById(dto.getMemberId());
+
+        // TODO: 이미 했는지 확인
 
         if (isLikeable(comment, member)) {
             commentLikeService.registerCommentLike(member, comment);
