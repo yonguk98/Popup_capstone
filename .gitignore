@@ -1,0 +1,8 @@
+/popup_dev.mv.db
+/popup_dev.trace.db
+/src/main/resources/application-secret.yml
+.DS_Store
+.DS_Store
+.gradle/
+.idea/
+build
