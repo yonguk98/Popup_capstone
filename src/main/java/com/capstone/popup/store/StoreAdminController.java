@@ -34,8 +34,8 @@ public class StoreAdminController {
     }
 
     @GetMapping("/crawling")
-    public GlobalResponse crawlStore() {
-
+    public GlobalResponse crawlStore(@RequestParam String accountName) {
+        storeService.crawlingRun(accountName);
         return GlobalResponse.of("200", "크롤링 완료");
     }
 

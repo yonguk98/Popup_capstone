@@ -17,11 +17,10 @@ public class Crawling {
     public List<String> run(String accountName) {
 
         // 크롬 드라이버 로드
-        String driverPath = "/Users/yonguk/Desktop/capstone/chromedriver";
-        String chromePath = "/Users/yonguk/Desktop/capstone/ChromeTesting.app";
+//        String driverPath = "./chromedriver.exe";
+//        String chromePath = "/Users/yonguk/Desktop/capstone/ChromeTesting.app";
 
-        System.setProperty("webdriver.chrome.driver", driverPath);
-
+//        System.setProperty("webdriver.chrome.driver", driverPath);
         ChromeOptions options = new ChromeOptions();
 //        options.setBinary(chromePath);
         options.addArguments("--remote-allow-origins=*");
@@ -64,7 +63,7 @@ public class Crawling {
         // 검색 후 이동
         String searchWord = "https://www.instagram.com/" + accountName;
         String searchHashtag = "성수팝업";
-        driver.get("https://www.instagram.com/explore/tags/" + searchWord);
+        driver.get(searchWord); //"https://www.instagram.com/explore/tags/" +
         try {
             sleep(10000);
         } catch (InterruptedException e) {
@@ -77,7 +76,7 @@ public class Crawling {
         List<String> imgLinks = new ArrayList<>();
 
         // 게시글로 이동
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 1; i++) {
             System.out.println(i);
             driver.get(links.get(i));
             try {
@@ -112,10 +111,15 @@ public class Crawling {
     private List<String> saveSrcLink(WebDriver driver) {
         List<WebElement> posts = driver.findElements(By.tagName("img"));
         List<String> imgLinks = new ArrayList<>();
-        for (WebElement post : posts) {
+        int limit = Math.min(posts.size(), 6);
+
+        for (int i = 0; i < limit; i++) {
+            WebElement post = posts.get(i);
             String imgLink = post.getAttribute("src");
-            System.out.println(imgLink + "\n");
-            imgLinks.add(imgLink);
+            if (imgLink.startsWith("https")) {
+                System.out.println(imgLink + "\n");
+                imgLinks.add(imgLink);
+            }
         }
         return imgLinks;
     }

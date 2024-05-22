@@ -57,6 +57,9 @@ dependencies {
 
 	//NETTY
 	runtimeOnly 'io.netty:netty-resolver-dns-native-macos:4.1.109.Final:osx-aarch_64'
+	implementation 'io.netty:netty-resolver-dns:4.1.109.Final'
+
+
 
 
 }
