@@ -11,8 +11,6 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -32,12 +30,10 @@ public class StoreService {
     private final StoreRepository storeRepository;
     private final AdminArticleService adminArticleService;
     private static String resultString;
-    private Crawling crawling;
-    private OcrRequest ocrRequest;
 
-    @Value("${secret.ncp.map.client.id}")
+    @Value("${ncp.map.client.id}")
     String clientId;
-    @Value("${secret.ncp.map.client.secret}")
+    @Value("${ncp.map.client.secret}")
     String clientSecret;
 
     public void registerStore(StoreCreateRequestDto dto) {
@@ -120,6 +116,9 @@ public class StoreService {
     }
 
     public void crawlingRun(String accountName){
+        Crawling crawling = new Crawling();
+        OcrRequest ocrRequest = new OcrRequest();
+
         List<String> urlList = crawling.run(accountName);
         log.info(accountName + "크롤링 완료");
 

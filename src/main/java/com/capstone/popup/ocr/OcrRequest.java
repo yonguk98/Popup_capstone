@@ -22,10 +22,10 @@ import java.util.concurrent.TimeUnit;
 
 public class OcrRequest {
 
-    @Value("${secret.ncp.clova.url}")
+    @Value("${ncp.clova.url}")
     String clovaApiUrl;
 
-    @Value("${secret.ncp.clova.secret")
+    @Value("${ncp.clova.secret}")
     String secretKey;
 
     private static String resultString;
