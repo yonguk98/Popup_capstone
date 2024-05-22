@@ -50,9 +50,10 @@ public class OcrRequest {
                 .retrieve()
                 .bodyToMono(String.class);
 
-        response.subscribe(result -> {
-            resultString = result;
-        });
+        resultString = response.block();
+//        response.subscribe(result -> {
+//            resultString = result;
+//        });
 
         return filtering(resultString);
 
