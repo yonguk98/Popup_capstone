@@ -55,6 +55,10 @@ dependencies {
 
 	implementation 'com.mysql:mysql-connector-j:8.0.32'
 
+	//NETTY
+	runtimeOnly 'io.netty:netty-resolver-dns-native-macos:4.1.109.Final:osx-aarch_64'
+
+
 }
 
 tasks.named('test') {
