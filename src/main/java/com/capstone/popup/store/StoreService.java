@@ -1,11 +1,16 @@
 package com.capstone.popup.store;
 
+import com.capstone.popup.admin.AdminArticleService;
+import com.capstone.popup.ocr.Crawling;
+import com.capstone.popup.ocr.OcrRequest;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
 import io.netty.handler.timeout.WriteTimeoutHandler;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
@@ -21,10 +26,19 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class StoreService {
 
     private final StoreRepository storeRepository;
+    private final AdminArticleService adminArticleService;
     private static String resultString;
+    private Crawling crawling;
+    private OcrRequest ocrRequest;
+
+    @Value("${secret.ncp.map.client.id}")
+    String clientId;
+    @Value("${secret.ncp.map.client.secret}")
+    String clientSecret;
 
     public void registerStore(StoreCreateRequestDto dto) {
         Store store = Store.builder()
@@ -82,8 +96,8 @@ public class StoreService {
         System.out.println(1);
         WebClient webClient = WebClient.builder()
                 .baseUrl("https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode")
-                .defaultHeader("X-NCP-APIGW-API-KEY-ID", "hucjy7m1er")
-                .defaultHeader("X-NCP-APIGW-API-KEY", "3khmL2HuhvASK6hpI9Nz7TqT1JGaS7RGzsC8NP6Q")
+                .defaultHeader("X-NCP-APIGW-API-KEY-ID", clientId)
+                .defaultHeader("X-NCP-APIGW-API-KEY", clientSecret)
                 .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .build();
         System.out.println(2);
@@ -103,5 +117,18 @@ public class StoreService {
         System.out.println(resultString);
 
         return resultString;
+    }
+
+    public void crawlingRun(String accountName){
+        List<String> urlList = crawling.run(accountName);
+        log.info(accountName + "크롤링 완료");
+
+        String jsonBody = ocrRequest.makeRequestBodyJson(urlList.get(1));
+        List<String> ocrResponse = ocrRequest.sendRequestToClova(jsonBody);
+        log.info("ocr 요청 완료");
+
+        // 번호로 구분된 결과들을 각각 게시글로 생성
+        ocrResponse.stream().forEach(data -> adminArticleService.createArticle(data));
+        log.info("게시글 생성 완료");
     }
 }

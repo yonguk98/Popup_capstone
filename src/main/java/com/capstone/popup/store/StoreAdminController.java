@@ -33,6 +33,12 @@ public class StoreAdminController {
         return GlobalResponse.of("200", "스토어 삭제 성공");
     }
 
+    @GetMapping("/crawling")
+    public GlobalResponse crawlStore() {
+
+        return GlobalResponse.of("200", "크롤링 완료");
+    }
+
     @GetMapping
     public GlobalResponse test() {
         return GlobalResponse.of("200", "test");
