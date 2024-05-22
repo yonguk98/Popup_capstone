@@ -37,4 +37,12 @@ public class StoreController {
     public GlobalResponse test() {
         return GlobalResponse.of("200", "test");
     }
+
+    @GetMapping("/geocode")
+    public GlobalResponse geocode(@RequestParam String addr) {
+
+        String res = storeService.requestGeocode(addr);
+
+        return GlobalResponse.of("200","주소 좌표 변환 완료", res);
+    }
 }
