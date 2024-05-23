@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/store")
@@ -41,7 +44,7 @@ public class StoreController {
     @GetMapping("/geocode")
     public GlobalResponse geocode(@RequestParam String addr) {
 
-        String res = storeService.requestGeocode(addr);
+        Map<String,String> res = storeService.requestGeocode(addr);
 
         return GlobalResponse.of("200","주소 좌표 변환 완료", res);
     }

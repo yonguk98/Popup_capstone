@@ -10,6 +10,8 @@ import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Service;
@@ -18,9 +20,7 @@ import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -30,8 +30,10 @@ public class StoreService {
 
     private final StoreRepository storeRepository;
     private final AdminArticleService adminArticleService;
-    private static String resultString;
     private final OcrRequest ocrRequest;
+    private final Crawling crawling;
+
+    private static String resultString;
 
     @Value("${ncp.map.client.id}")
     String clientId;
@@ -39,11 +41,16 @@ public class StoreService {
     String clientSecret;
 
     public void registerStore(StoreCreateRequestDto dto) {
+
+        Map<String,String> coordinate = requestGeocode(dto.getLocation());
+
         Store store = Store.builder()
                 .name(dto.getName())
                 .startDate(dto.getStartDate())
                 .endDate(dto.getEndDate())
                 .location(dto.getLocation())
+                .xCoordinate(coordinate.get("x"))
+                .yCoordinate(coordinate.get("y"))
                 .build();
 
         checkDuplicationStore(dto.getName());
@@ -84,7 +91,7 @@ public class StoreService {
         );
     }
 
-    public String requestGeocode(String addr){
+    public Map<String,String> requestGeocode(String addr){
         HttpClient httpClient = HttpClient.create()
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000) //timeout 시간 조절
                 .responseTimeout(Duration.ofMillis(7000))
@@ -104,12 +111,28 @@ public class StoreService {
 
         resultString = response.block();
 
-        return resultString;
+        JSONObject jsonObject = new JSONObject(resultString);
+
+        // addresses 배열 가져오기
+        JSONArray addressesArray = jsonObject.getJSONArray("addresses");
+
+        // 첫 번째 객체 가져오기
+        JSONObject addressObject = addressesArray.getJSONObject(0);
+
+        Map<String,String> coordinates = new HashMap<>();
+        coordinates.put("x", addressObject.getString("x"));
+        coordinates.put("y", addressObject.getString("y"));
+//        // x와 y 좌표 추출
+//        String xCoordinate = addressObject.getString("x");
+//        String yCoordinate = addressObject.getString("y");
+//
+//        System.out.println("x 좌표: " + xCoordinate);
+//        System.out.println("y 좌표: " + yCoordinate);
+
+        return coordinates;
     }
 
     public void crawlingRun(String accountName){
-        Crawling crawling = new Crawling();
-//        OcrRequest ocrRequest = new OcrRequest();
 
         List<String> urlList = crawling.run(accountName);
         log.info(accountName + "크롤링 완료");

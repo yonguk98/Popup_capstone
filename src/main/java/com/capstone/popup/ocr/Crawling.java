@@ -1,10 +1,12 @@
 package com.capstone.popup.ocr;
 
+import lombok.RequiredArgsConstructor;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -12,17 +14,18 @@ import java.util.List;
 
 import static java.lang.Thread.sleep;
 
+@Component
+@RequiredArgsConstructor
 public class Crawling {
+
+    private final YmlUtil ymlUtil;
 
     public List<String> run(String accountName) {
 
-        // 크롬 드라이버 로드
-//        String driverPath = "./chromedriver.exe";
-//        String chromePath = "/Users/yonguk/Desktop/capstone/ChromeTesting.app";
+        String instaId = ymlUtil.getInstaId();
+        String instaPwd = ymlUtil.getInstaPwd();
 
-//        System.setProperty("webdriver.chrome.driver", driverPath);
         ChromeOptions options = new ChromeOptions();
-//        options.setBinary(chromePath);
         options.addArguments("--remote-allow-origins=*");
 
         WebDriver driver = new ChromeDriver(options);
@@ -40,11 +43,11 @@ public class Crawling {
         System.out.println(emailBox.get(0).getText());
 
         // 이메일, 비밀번호 입력
-        String email = "01099129827";
+        String email = instaId;
         emailBox.get(0).clear();
         emailBox.get(0).sendKeys(email);
 
-        String pwd = "Toji1801";
+        String pwd = instaPwd;
         emailBox.get(1).clear();
         emailBox.get(1).sendKeys(pwd);
 
@@ -111,7 +114,7 @@ public class Crawling {
     private List<String> saveSrcLink(WebDriver driver) {
         List<WebElement> posts = driver.findElements(By.tagName("img"));
         List<String> imgLinks = new ArrayList<>();
-        int limit = Math.min(posts.size(), 6);
+        int limit = Math.min(posts.size(), 10);
 
         for (int i = 0; i < limit; i++) {
             WebElement post = posts.get(i);

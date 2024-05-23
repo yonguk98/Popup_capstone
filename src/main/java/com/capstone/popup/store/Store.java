@@ -23,10 +23,14 @@ public class Store {
 
     private String name;
 
-    private LocalDateTime startDate;
+    private String startDate;
 
-    private LocalDateTime endDate;
+    private String endDate;
 
     private String location;
+
+    private String xCoordinate;
+
+    private String yCoordinate;
 
 }

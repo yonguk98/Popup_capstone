@@ -15,10 +15,10 @@ public class StoreCreateRequestDto {
     private String name;
 
     @NotNull
-    private LocalDateTime startDate;
+    private String  startDate;
 
     @NotNull
-    private LocalDateTime endDate;
+    private String  endDate;
 
     @NotBlank
     private String location;
