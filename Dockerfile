@@ -32,7 +32,11 @@ WORKDIR /app
 # 첫 번째 스테이지에서 빌드된 JAR 파일 복사
 COPY --from=builder /app/build/libs/*.jar app.jar
 
-# cURL을 사용하여 Chrome 설치
+# 필요한 패키지 설치
+RUN microdnf install -y wget \
+    && microdnf install -y curl
+
+# Chrome 설치
 RUN curl -O https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm \
     && rpm -ivh google-chrome-stable_current_x86_64.rpm \
     && rm -f google-chrome-stable_current_x86_64.rpm
