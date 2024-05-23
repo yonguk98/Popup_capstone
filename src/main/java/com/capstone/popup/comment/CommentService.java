@@ -71,6 +71,7 @@ public class CommentService {
             }
 
             CommentReadResponseDto dto = CommentReadResponseDto.builder()
+                    .id(comment.getId())
                     .writer(comment.getWriter())
                     .content(comment.getContent())
                     .likeCount(comment.getLikeCount())
