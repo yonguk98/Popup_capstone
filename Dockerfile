@@ -32,11 +32,15 @@ WORKDIR /app
 COPY --from=builder /app/build/libs/*.jar app.jar
 
 # 필요한 패키지 설치
-# 필요한 패키지 설치
 RUN microdnf install -y wget curl
 
-RUN microdnf install -y libX11 libXcomposite libXdamage libXext libXfixes libXrandr alsa-lib atk at-spi2-core cairo cups-libs dbus-libs liberation-fonts dbus libdrm libgbm gtk3 nspr nss pango vulkan xcb-util xkbcommon xdg-utils
-
+# 필요한 패키지 그룹별 설치 시도 및 디버깅 출력
+RUN microdnf install -y \
+        libX11 libXcomposite libXdamage libXext libXfixes libXrandr || echo "Failed to install X11 libraries" \
+    && microdnf install -y \
+        alsa-lib atk at-spi2-core cairo || echo "Failed to install GUI libraries" \
+    && microdnf install -y \
+        cups-libs dbus-libs liberation-fonts dbus libdrm libgbm gtk3 nspr nss pango vulkan xcb-util xdg-utils || echo "Failed to install other libraries"
 
 # Chrome 설치
 RUN curl -O https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm \
