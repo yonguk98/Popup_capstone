@@ -33,8 +33,7 @@ WORKDIR /app
 COPY --from=builder /app/build/libs/*.jar app.jar
 
 # 필요한 패키지 설치
-RUN microdnf install -y wget \
-    && microdnf install -y curl
+RUN microdnf install -y wget curl
 
 # Chrome 설치
 RUN curl -O https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm \
