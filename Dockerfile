@@ -10,11 +10,6 @@ COPY gradle gradle
 COPY build.gradle .
 COPY settings.gradle .
 
-# 크롬 설치
-RUN sudo wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
-
-RUN sudo yum install google-chrome-stable_current_x86_64.rpm
-
 # Gradle 래퍼에 실행 권한 부여
 RUN chmod +x ./gradlew
 
@@ -36,6 +31,11 @@ WORKDIR /app
 
 # 첫 번째 스테이지에서 빌드된 JAR 파일 복사
 COPY --from=builder /app/build/libs/*.jar app.jar
+
+# cURL을 사용하여 Chrome 설치
+RUN curl -O https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm \
+    && rpm -ivh google-chrome-stable_current_x86_64.rpm \
+    && rm -f google-chrome-stable_current_x86_64.rpm
 
 # 실행할 JAR 파일 지정
 ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=prod", "app.jar"]
