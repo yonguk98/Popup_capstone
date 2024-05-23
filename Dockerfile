@@ -10,6 +10,11 @@ COPY gradle gradle
 COPY build.gradle .
 COPY settings.gradle .
 
+# 크롬 설치
+RUN sudo wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm
+
+RUN sudo yum install google-chrome-stable_current_x86_64.rpm
+
 # Gradle 래퍼에 실행 권한 부여
 RUN chmod +x ./gradlew
 
