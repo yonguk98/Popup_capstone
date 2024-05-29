@@ -5,8 +5,11 @@ import com.capstone.popup.member.dto.*;
 import com.capstone.popup.member.service.MemberLoginService;
 import com.capstone.popup.member.service.MemberService;
 import com.capstone.popup.member.util.CookieUtil;
+import com.capstone.popup.member.util.ResponseUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.support.HttpComponentsHeadersAdapter;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,6 +23,7 @@ public class MemberController {
     private final MemberService memberService;
     private final MemberLoginService memberLoginService;
     private final CookieUtil cookieUtil;
+    private final ResponseUtil responseUtil;
 
     @PostMapping("/create")
     public GlobalResponse memberCreate(@Valid @RequestBody MemberCreateRequestDto dto) {
@@ -30,8 +34,11 @@ public class MemberController {
     @PostMapping("/login")
     public GlobalResponse memberLogin(@Valid @RequestBody MemberLoginRequestDto dto) {
         MemberLoginResponseDto responseDto = memberLoginService.Login(dto);
-        cookieUtil.addCrossDomainCookie(responseDto.getAccessToken(), responseDto.getRefreshToken());
-        return GlobalResponse.of("200", "로그인 성공", responseDto);
+//        cookieUtil.addCrossDomainCookie(responseDto.getAccessToken(), responseDto.getRefreshToken());
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + responseDto.getAccessToken());
+        headers.set("Authorization", "Bearer " + responseDto.getRefreshToken());
+        return GlobalResponse.of("200", "로그인 성공");
     }
 
     @PostMapping("/logout")
