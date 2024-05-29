@@ -40,7 +40,7 @@ public class MemberController {
 //        headers.set("Authorization", "Bearer " + responseDto.getRefreshToken());
         responseUtil.addHeader("Authorization", "Bearer " + responseDto.getAccessToken());
         responseUtil.addHeader("Authorization", "Bearer " + responseDto.getRefreshToken());
-        return GlobalResponse.of("200", "로그인 성공");
+        return GlobalResponse.of("200", "로그인 성공", responseDto);
     }
 
     @PostMapping("/logout")

@@ -51,7 +51,7 @@ public class MemberLoginService {
             return new SecurityUser(
                     id,
                     username,
-                    null,
+                    "",
                     authorities
             );
         }
