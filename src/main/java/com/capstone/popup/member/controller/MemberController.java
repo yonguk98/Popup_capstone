@@ -36,8 +36,10 @@ public class MemberController {
         MemberLoginResponseDto responseDto = memberLoginService.Login(dto);
 //        cookieUtil.addCrossDomainCookie(responseDto.getAccessToken(), responseDto.getRefreshToken());
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + responseDto.getAccessToken());
-        headers.set("Authorization", "Bearer " + responseDto.getRefreshToken());
+//        headers.set("Authorization", "Bearer " + responseDto.getAccessToken());
+//        headers.set("Authorization", "Bearer " + responseDto.getRefreshToken());
+        responseUtil.addHeader("Authorization", "Bearer " + responseDto.getAccessToken());
+        responseUtil.addHeader("Authorization", "Bearer " + responseDto.getRefreshToken());
         return GlobalResponse.of("200", "로그인 성공");
     }
 
