@@ -7,6 +7,7 @@ import com.capstone.popup.member.util.SecurityUser;
 import com.capstone.popup.member.dto.MemberLoginRequestDto;
 import com.capstone.popup.member.entity.Member;
 import io.jsonwebtoken.Claims;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,14 +30,19 @@ public class MemberLoginService {
     private String SECRET_KEY;
 
     public SecurityUser getUserFromApiKey(String token) {
+        // decoding jwt
         Claims claims = JwtUtil.decode(token, SECRET_KEY);
 
+        // check token type
+        String tokenType = claims.get("type", String.class);
+        if (!"access".equals(tokenType) && !"refresh".equals(tokenType)) {
+            throw new IllegalArgumentException("Invalid token type");
+        }
+
+        // get user data
         Map<String, Object> data = (Map<String, Object>) claims.get("data");
-
         long id = Long.parseLong((String) data.get("id"));
-
         String username = (String) data.get("loginId");
-
         List<? extends GrantedAuthority> authorities = ((List<String>) data.get("authorities"))
                 .stream()
                 .map(SimpleGrantedAuthority::new)
@@ -45,7 +51,7 @@ public class MemberLoginService {
         return new SecurityUser(
                 id,
                 username,
-                "",
+                null,
                 authorities
         );
     }
@@ -85,6 +91,7 @@ public class MemberLoginService {
                         "authorities", member.getAuthoritiesAsStrList()
                 )
                 , SECRET_KEY
+                , "access"
         );
 
         return accessToken;
@@ -98,6 +105,7 @@ public class MemberLoginService {
                         "loginId", member.getLoginId()
                 )
                 , SECRET_KEY
+                ,"refresh"
         );
 //        memberRestService.setRefreshToken(member, refreshToken);
 

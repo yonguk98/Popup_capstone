@@ -42,7 +42,7 @@ dependencies {
 
 	//JWT
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
-	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3', 'io.jsonwebtoken:jjwt-jackson:0.12.3'
+	implementation 'io.jsonwebtoken:jjwt-impl:0.12.3', 'io.jsonwebtoken:jjwt-jackson:0.12.3'
 
 	//CRAWLING
 	implementation 'org.seleniumhq.selenium:selenium-java:4.18.1'
@@ -54,7 +54,7 @@ dependencies {
 	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 	implementation 'org.json:json:20240303'
 
-	implementation 'com.mysql:mysql-connector-j:8.0.32'
+	implementation 'com.mysql:mysql-connector-j:8.2.0'
 
 	//NETTY
 	runtimeOnly 'io.netty:netty-resolver-dns-native-macos:4.1.109.Final:osx-aarch_64'
