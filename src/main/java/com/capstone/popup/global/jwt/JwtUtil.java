@@ -15,9 +15,10 @@ public class JwtUtil {
     public static String encode(long expirationSeconds, Map<String, Object> data, String secretKey, String type) {
         Claims claims = Jwts
                 .claims()
+                .add("type", type)
+                .subject("auth")
                 .add("data", data)
                 .build();
-        claims.put("type", type);
 
         Date now = new Date();
         Date expiration = new Date(now.getTime() + 1000 * expirationSeconds);

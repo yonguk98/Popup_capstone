@@ -39,21 +39,23 @@ public class MemberLoginService {
             throw new IllegalArgumentException("Invalid token type");
         }
 
-        // get user data
-        Map<String, Object> data = (Map<String, Object>) claims.get("data");
-        long id = Long.parseLong((String) data.get("id"));
-        String username = (String) data.get("loginId");
-        List<? extends GrantedAuthority> authorities = ((List<String>) data.get("authorities"))
-                .stream()
-                .map(SimpleGrantedAuthority::new)
-                .toList();
-
-        return new SecurityUser(
-                id,
-                username,
-                null,
-                authorities
-        );
+        if ("access".equals(tokenType)) {
+            // get user data
+            Map<String, Object> data = (Map<String, Object>) claims.get("data");
+            long id = Long.parseLong((String) data.get("id"));
+            String username = (String) data.get("loginId");
+            List<? extends GrantedAuthority> authorities = ((List<String>) data.get("authorities"))
+                    .stream()
+                    .map(SimpleGrantedAuthority::new)
+                    .toList();
+            return new SecurityUser(
+                    id,
+                    username,
+                    null,
+                    authorities
+            );
+        }
+        return null;
     }
 
     public MemberLoginResponseDto Login(MemberLoginRequestDto dto) {
@@ -105,7 +107,7 @@ public class MemberLoginService {
                         "loginId", member.getLoginId()
                 )
                 , SECRET_KEY
-                ,"refresh"
+                , "refresh"
         );
 //        memberRestService.setRefreshToken(member, refreshToken);
 

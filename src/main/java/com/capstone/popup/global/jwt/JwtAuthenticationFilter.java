@@ -43,6 +43,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // apiKey가 존재하면 사용자 인증 설정
         if (apiKey != null) {
             SecurityUser user = memberLoginService.getUserFromApiKey(apiKey);
+            if (user == null) {
+                throw new RuntimeException("토큰이 잘못되었습니다.");
+            }
             setAuthentication(user, request);
         }
 
