@@ -22,6 +22,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final SameSiteFilter sameSiteFilter;
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -29,6 +30,7 @@ public class SecurityConfig {
                 .httpBasic(HttpBasicConfigurer::disable)
                 .csrf(CsrfConfigurer::disable)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(sameSiteFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
                         .requestMatchers(new AntPathRequestMatcher("/admin/**")).hasAnyAuthority("ROLE_ADMIN")
                         .anyRequest().permitAll())
